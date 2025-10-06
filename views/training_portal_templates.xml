@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add Training Menu to Portal -->
+    <template id="portal_my_home_training" name="Portal My Home: Training" inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="enrollment_count" t-value="len(request.env['training.enrollment'].search([('employee_id.user_id', '=', request.env.user.id)]))"/>
+            <t t-set="certificate_count" t-value="len(request.env['training.certificate'].search([('employee_id.user_id', '=', request.env.user.id)]))"/>
+            
+            <div class="col-lg-6 o_my_home_content">
+                <div class="o_my_home_title">
+                    <h3>Training &amp; Certifications</h3>
+                </div>
+                <div class="row">
+                    <t t-call="portal.portal_docs_entry">
+                        <t t-set="icon" t-value="'/employee_training/static/src/img/training_icon.png'"/>
+                        <t t-set="title">My Enrollments</t>
+                        <t t-set="url" t-value="'/my/enrollments'"/>
+                        <t t-set="count" t-value="enrollment_count"/>
+                    </t>
+                    <t t-call="portal.portal_docs_entry">
+                        <t t-set="icon" t-value="'/employee_training/static/src/img/certificate_icon.png'"/>
+                        <t t-set="title">My Certificates</t>
+                        <t t-set="url" t-value="'/my/certificates'"/>
+                        <t t-set="count" t-value="certificate_count"/>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Portal: My Enrollments -->
+    <template id="portal_my_enrollments" name="My Enrollments">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Training Enrollments</t>
+            </t>
+            
+            <t t-if="not enrollments">
+                <div class="alert alert-info" role="alert">
+                    You have no training enrollments yet.
+                </div>
+            </t>
+            <t t-else="">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Course</th>
+                                    <th>Session</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="enrollments" t-as="enrollment">
+                                    <tr>
+                                        <td><t t-esc="enrollment.course_id.name"/></td>
+                                        <td><t t-esc="enrollment.session_id.name"/></td>
+                                        <td><t t-esc="enrollment.start_date"/></td>
+                                        <td><t t-esc="enrollment.end_date"/></td>
+                                        <td>
+                                            <t t-if="enrollment.state == 'draft'">
+                                                <span class="badge text-bg-secondary">Draft</span>
+                                            </t>
+                                            <t t-elif="enrollment.state == 'confirmed'">
+                                                <span class="badge text-bg-primary">Confirmed</span>
+                                            </t>
+                                            <t t-elif="enrollment.state == 'attended'">
+                                                <span class="badge text-bg-success">Attended</span>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="badge text-bg-danger">Cancelled</span>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <a t-attf-href="/my/enrollments/#{enrollment.id}" class="btn btn-sm btn-secondary">
+                                                View Details
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Portal: Enrollment Detail -->
+    <template id="portal_enrollment_detail" name="Enrollment Detail">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            Training Enrollment: <t t-esc="enrollment.name"/>
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <strong>Course:</strong>
+                                <p><t t-esc="enrollment.course_id.name"/></p>
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Status:</strong>
+                                <p>
+                                    <t t-if="enrollment.state == 'draft'">
+                                        <span class="badge text-bg-secondary">Draft</span>
+                                    </t>
+                                    <t t-elif="enrollment.state == 'confirmed'">
+                                        <span class="badge text-bg-primary">Confirmed</span>
+                                    </t>
+                                    <t t-elif="enrollment.state == 'attended'">
+                                        <span class="badge text-bg-success">Attended</span>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="badge text-bg-danger">Cancelled</span>
+                                    </t>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <strong>Start Date:</strong>
+                                <p><t t-esc="enrollment.start_date"/></p>
+                            </div>
+                            <div class="col-md-6">
+                                <strong>End Date:</strong>
+                                <p><t t-esc="enrollment.end_date"/></p>
+                            </div>
+                        </div>
+                        <t t-if="enrollment.notes">
+                            <div class="row">
+                                <div class="col-12">
+                                    <strong>Notes:</strong>
+                                    <p><t t-esc="enrollment.notes"/></p>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Portal: My Certificates -->
+    <template id="portal_my_certificates" name="My Certificates">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Training Certificates</t>
+            </t>
+            
+            <t t-if="not certificates">
+                <div class="alert alert-info" role="alert">
+                    You have no certificates yet.
+                </div>
+            </t>
+            <t t-else="">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Certificate Number</th>
+                                    <th>Course</th>
+                                    <th>Issue Date</th>
+                                    <th>Expiry Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="certificates" t-as="certificate">
+                                    <tr>
+                                        <td><t t-esc="certificate.name"/></td>
+                                        <td><t t-esc="certificate.course_id.name"/></td>
+                                        <td><t t-esc="certificate.issue_date"/></td>
+                                        <td>
+                                            <t t-if="certificate.expiry_date">
+                                                <t t-esc="certificate.expiry_date"/>
+                                            </t>
+                                            <t t-else="">
+                                                No Expiry
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <t t-if="certificate.state == 'valid'">
+                                                <span class="badge text-bg-success">Valid</span>
+                                            </t>
+                                            <t t-elif="certificate.state == 'expiring_soon'">
+                                                <span class="badge text-bg-warning">Expiring Soon</span>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="badge text-bg-danger">Expired</span>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <a t-attf-href="/my/certificates/#{certificate.id}" class="btn btn-sm btn-secondary me-1">
+                                                View
+                                            </a>
+                                            <a t-attf-href="/my/certificates/#{certificate.id}/download" class="btn btn-sm btn-primary">
+                                                <i class="fa fa-download"/> PDF
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Portal: Certificate Detail -->
+    <template id="portal_certificate_detail" name="Certificate Detail">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0">
+                            Certificate: <t t-esc="certificate.name"/>
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <strong>Course:</strong>
+                                <p><t t-esc="certificate.course_id.name"/></p>
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Status:</strong>
+                                <p>
+                                    <t t-if="certificate.state == 'valid'">
+                                        <span class="badge text-bg-success">Valid</span>
+                                    </t>
+                                    <t t-elif="certificate.state == 'expiring_soon'">
+                                        <span class="badge text-bg-warning">Expiring Soon</span>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="badge text-bg-danger">Expired</span>
+                                    </t>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <strong>Issue Date:</strong>
+                                <p><t t-esc="certificate.issue_date"/></p>
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Expiry Date:</strong>
+                                <p>
+                                    <t t-if="certificate.expiry_date">
+                                        <t t-esc="certificate.expiry_date"/>
+                                        <t t-if="certificate.days_until_expiry &gt; 0">
+                                            (<t t-esc="certificate.days_until_expiry"/> days remaining)
+                                        </t>
+                                    </t>
+                                    <t t-else="">
+                                        No Expiry
+                                    </t>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <a t-attf-href="/my/certificates/#{certificate.id}/download" class="btn btn-primary">
+                                    <i class="fa fa-download"/> Download PDF Certificate
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

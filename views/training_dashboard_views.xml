@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard Action -->
+    <record id="action_training_dashboard" model="ir.actions.client">
+        <field name="name">Training Dashboard</field>
+        <field name="tag">training_dashboard</field>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Dashboard Menu Item -->
+    <menuitem id="menu_training_dashboard"
+              name="Dashboard"
+              parent="menu_training_root"
+              action="action_training_dashboard"
+              sequence="1"/>
+</odoo>

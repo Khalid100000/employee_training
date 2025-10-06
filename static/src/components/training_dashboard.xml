@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="employee_training.TrainingDashboard">
+        <div class="o_training_dashboard">
+            <!-- Header -->
+            <div class="o_training_dashboard_header">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="mb-0">
+                        <i class="fa fa-graduation-cap me-2"/>Training Dashboard
+                    </h2>
+                    <button class="btn btn-primary" t-on-click="openQuickEnrollDialog">
+                        <i class="fa fa-plus me-2"/>Quick Enroll
+                    </button>
+                </div>
+
+                <!-- Statistics Cards -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-white-50 mb-1">Active Sessions</h6>
+                                        <h3 class="mb-0" t-esc="state.statistics.total_active_sessions"/>
+                                    </div>
+                                    <i class="fa fa-calendar fa-3x opacity-50"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-white-50 mb-1">Enrollments (Month)</h6>
+                                        <h3 class="mb-0" t-esc="state.statistics.total_enrollments_this_month"/>
+                                    </div>
+                                    <i class="fa fa-users fa-3x opacity-50"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-white-50 mb-1">Expiring Soon</h6>
+                                        <h3 class="mb-0" t-esc="state.statistics.certificates_expiring_soon"/>
+                                    </div>
+                                    <i class="fa fa-clock-o fa-3x opacity-50"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-info text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-white-50 mb-1">Completion Rate</h6>
+                                        <h3 class="mb-0"><t t-esc="state.statistics.completion_rate"/>%</h3>
+                                    </div>
+                                    <i class="fa fa-check-circle fa-3x opacity-50"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="row g-3">
+                <!-- Left Column -->
+                <div class="col-lg-8">
+                    <!-- Enrollments Chart -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="fa fa-line-chart me-2"/>Enrollment Trends</h5>
+                        </div>
+                        <div class="card-body">
+                            <div style="height: 300px;">
+                                <canvas id="enrollmentsChart"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Sessions -->
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="fa fa-calendar me-2"/>Upcoming Sessions</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Course</th>
+                                            <th>Date</th>
+                                            <th>Location</th>
+                                            <th>Instructor</th>
+                                            <th>Available Seats</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-if="state.upcomingSessions.length === 0">
+                                            <tr>
+                                                <td colspan="5" class="text-center text-muted py-4">
+                                                    No upcoming sessions
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-foreach="state.upcomingSessions" t-as="session" t-key="session.id">
+                                            <tr class="cursor-pointer" t-on-click="() => this.openSessionRecord(session.id)">
+                                                <td><strong t-esc="session.course_name"/></td>
+                                                <td>
+                                                    <small class="text-muted">
+                                                        <t t-esc="session.start_date"/> - <t t-esc="session.end_date"/>
+                                                    </small>
+                                                </td>
+                                                <td><t t-esc="session.location"/></td>
+                                                <td><t t-esc="session.instructor"/></td>
+                                                <td>
+                                                    <span t-attf-class="badge bg-{{session.available_seats &lt; 5 ? 'danger' : 'success'}}">
+                                                        <t t-esc="session.available_seats"/> / <t t-esc="session.capacity"/>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-lg-4">
+                    <!-- Expiring Certificates -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="fa fa-warning me-2"/>Expiring Certificates</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush">
+                                <t t-if="state.expiringCertificates.length === 0">
+                                    <div class="list-group-item text-center text-muted">
+                                        No certificates expiring soon
+                                    </div>
+                                </t>
+                                <t t-foreach="state.expiringCertificates" t-as="cert" t-key="cert.id">
+                                    <a href="#" class="list-group-item list-group-item-action" 
+                                       t-on-click.prevent="() => this.openCertificateRecord(cert.id)">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1" t-esc="cert.employee_name"/>
+                                                <small class="text-muted d-block" t-esc="cert.course_name"/>
+                                            </div>
+                                            <div t-attf-class="{{getDaysColor(cert.days_until_expiry)}}">
+                                                <t t-esc="cert.days_until_expiry"/> days
+                                            </div>
+                                        </div>
+                                        <small class="text-muted">
+                                            Expires: <t t-esc="cert.expiry_date"/>
+                                        </small>
+                                    </a>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Courses -->
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="fa fa-trophy me-2"/>Top 5 Courses</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush">
+                                <t t-if="state.topCourses.length === 0">
+                                    <div class="list-group-item text-center text-muted">
+                                        No course data yet
+                                    </div>
+                                </t>
+                                <t t-foreach="state.topCourses" t-as="course" t-key="course.id">
+                                    <a href="#" class="list-group-item list-group-item-action"
+                                       t-on-click.prevent="() => this.openCourseRecord(course.id)">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1">
+                                                    <t t-esc="course.name"/>
+                                                    <span t-if="course.is_certification" class="badge bg-primary ms-2">
+                                                        <i class="fa fa-certificate"/>
+                                                    </span>
+                                                </h6>
+                                                <small class="text-muted">
+                                                    <t t-esc="course.count"/> attendees
+                                                </small>
+                                            </div>
+                                            <div class="text-end">
+                                                <h4 class="mb-0 text-primary">
+                                                    #<t t-esc="course_index + 1"/>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Enrollment Modal -->
+            <div t-if="state.showEnrollmentDialog" class="modal d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                <i class="fa fa-user-plus me-2"/>Quick Enrollment
+                            </h5>
+                            <button type="button" class="btn-close" t-on-click="closeEnrollmentDialog"/>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Employee</label>
+                                <select class="form-select" t-on-change="onEmployeeChange">
+                                    <option value="">Select an employee...</option>
+                                    <t t-foreach="state.availableEmployees" t-as="employee" t-key="employee.id">
+                                        <option t-att-value="employee.id" t-esc="employee.name"/>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Training Session</label>
+                                <select class="form-select" t-on-change="onSessionChange">
+                                    <option value="">Select a session...</option>
+                                    <t t-foreach="state.availableSessions" t-as="session" t-key="session.id">
+                                        <option t-att-value="session.id" t-esc="session.display_name"/>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="alert alert-info mb-0">
+                                <i class="fa fa-info-circle me-2"/>
+                                The enrollment will be automatically confirmed.
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" t-on-click="closeEnrollmentDialog">
+                                Cancel
+                            </button>
+                            <button type="button" class="btn btn-primary" t-on-click="createEnrollment">
+                                <i class="fa fa-check me-2"/>Create Enrollment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Overlay -->
+            <div t-if="state.isLoading" class="o_loading_overlay">
+                <div class="text-center">
+                    <i class="fa fa-spinner fa-spin fa-3x text-primary mb-3"/>
+                    <p>Loading dashboard data...</p>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

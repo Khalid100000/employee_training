@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Paper Format for Certificate - No Header/Footer -->
+    <!-- MUST BE DEFINED FIRST before the report that references it -->
+    <record id="paperformat_certificate" model="report.paperformat">
+        <field name="name">Certificate Format</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- Report Definition -->
+    <record id="action_report_training_certificate" model="ir.actions.report">
+        <field name="name">Training Certificate</field>
+        <field name="model">training.certificate</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">employee_training.report_training_certificate_document</field>
+        <field name="report_file">employee_training.report_training_certificate_document</field>
+        <field name="binding_model_id" ref="model_training_certificate"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Certificate - %s' % (object.name)</field>
+        <field name="paperformat_id" ref="employee_training.paperformat_certificate"/>
+    </record>
+</odoo>

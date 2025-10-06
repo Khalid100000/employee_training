@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Training Course List View -->
+    <record id="view_training_course_list" model="ir.ui.view">
+        <field name="name">training.course.list</field>
+        <field name="model">training.course</field>
+        <field name="arch" type="xml">
+            <list string="Training Courses">
+                <field name="name"/>
+                <field name="duration_days"/>
+                <field name="is_certification" widget="boolean_toggle"/>
+                <field name="session_count"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Training Course Form View -->
+    <record id="view_training_course_form" model="ir.ui.view">
+        <field name="name">training.course.form</field>
+        <field name="model">training.course</field>
+        <field name="arch" type="xml">
+            <form string="Training Course">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_sessions"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-calendar">
+                            <field name="session_count" widget="statinfo" string="Sessions"/>
+                        </button>
+                        <button name="action_view_certificates"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-certificate"
+                                invisible="not is_certification">
+                            <field name="certificate_count" widget="statinfo" string="Certificates"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" 
+                            invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="name" placeholder="e.g., Safety Training, Leadership Skills"/>
+                            <field name="duration_days"/>
+                            <field name="is_certification"/>
+                        </group>
+                        <group>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Enter course description, objectives, and requirements..."/>
+                        </page>
+                        <page string="Sessions">
+                            <field name="session_ids">
+                                <list>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="instructor_id"/>
+                                    <field name="location"/>
+                                    <field name="enrolled_count"/>
+                                    <field name="capacity"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Training Course Search View -->
+    <record id="view_training_course_search" model="ir.ui.view">
+        <field name="name">training.course.search</field>
+        <field name="model">training.course</field>
+        <field name="arch" type="xml">
+            <search string="Search Courses">
+                <field name="name"/>
+                <field name="description"/>
+                <filter string="Certification Courses" name="certification" domain="[('is_certification', '=', True)]"/>
+                <filter string="Regular Courses" name="regular" domain="[('is_certification', '=', False)]"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Certification" name="group_certification" context="{'group_by': 'is_certification'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Training Course Action -->
+    <record id="action_training_course" model="ir.actions.act_window">
+        <field name="name">Training Courses</field>
+        <field name="res_model">training.course</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_training_course_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first training course
+            </p>
+            <p>
+                Define courses that will be offered to employees for training and certification.
+            </p>
+        </field>
+    </record>
+</odoo>

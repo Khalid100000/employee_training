@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Training Session List View -->
+    <record id="view_training_session_list" model="ir.ui.view">
+        <field name="name">training.session.list</field>
+        <field name="model">training.session</field>
+        <field name="arch" type="xml">
+            <list string="Training Sessions">
+                <field name="name"/>
+                <field name="course_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="instructor_id"/>
+                <field name="location"/>
+                <field name="enrolled_count"/>
+                <field name="capacity"/>
+                <field name="available_seats" decoration-danger="available_seats &lt;= 0" decoration-warning="available_seats &lt;= 5"/>
+                <field name="state" widget="badge" 
+                       decoration-success="state == 'completed'"
+                       decoration-info="state == 'scheduled'"
+                       decoration-warning="state == 'ongoing'"
+                       decoration-danger="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Training Session Form View -->
+    <record id="view_training_session_form" model="ir.ui.view">
+        <field name="name">training.session.form</field>
+        <field name="model">training.session</field>
+        <field name="arch" type="xml">
+            <form string="Training Session">
+                <header>
+                    <field name="state" widget="statusbar" 
+                           statusbar_visible="draft,scheduled,ongoing,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_enrollments"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-users">
+                            <field name="enrolled_count" widget="statinfo" string="Enrolled"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="course_id" options="{'no_create': True}"/>
+                            <field name="instructor_id"/>
+                            <field name="location" placeholder="e.g., Conference Room A, Online"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="capacity"/>
+                            <field name="available_seats"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Enrollments">
+                            <field name="enrollment_ids">
+                                <list>
+                                    <field name="employee_id"/>
+                                    <field name="enrollment_date"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Training Session Calendar View -->
+    <record id="view_training_session_calendar" model="ir.ui.view">
+        <field name="name">training.session.calendar</field>
+        <field name="model">training.session</field>
+        <field name="arch" type="xml">
+            <calendar string="Training Sessions" 
+                      date_start="start_date" 
+                      date_stop="end_date" 
+                      color="course_id"
+                      mode="month">
+                <field name="course_id"/>
+                <field name="instructor_id"/>
+                <field name="available_seats"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Training Session Search View -->
+    <record id="view_training_session_search" model="ir.ui.view">
+        <field name="name">training.session.search</field>
+        <field name="model">training.session</field>
+        <field name="arch" type="xml">
+            <search string="Search Sessions">
+                <field name="course_id"/>
+                <field name="instructor_id"/>
+                <field name="location"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Scheduled" name="scheduled" domain="[('state', '=', 'scheduled')]"/>
+                <filter string="Upcoming" name="upcoming" domain="[('start_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Available Seats" name="available" domain="[('available_seats', '&gt;', 0)]"/>
+                <separator/>
+                <filter string="Start Date" name="start_date" date="start_date"/>
+                <group expand="0" string="Group By">
+                    <filter string="Course" name="group_course" context="{'group_by': 'course_id'}"/>
+                    <filter string="Instructor" name="group_instructor" context="{'group_by': 'instructor_id'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Start Date" name="group_start_date" context="{'group_by': 'start_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Training Session Action -->
+    <record id="action_training_session" model="ir.actions.act_window">
+        <field name="name">Training Sessions</field>
+        <field name="res_model">training.session</field>
+        <field name="view_mode">list,form,calendar</field>
+        <field name="search_view_id" ref="view_training_session_search"/>
+        <field name="context">{'search_default_upcoming': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Schedule a new training session
+            </p>
+            <p>
+                Create training sessions and manage enrollments.
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Email Template for Certificate Expiry Notification -->
+    <record id="mail_template_certificate_expiry" model="mail.template">
+        <field name="name">Training: Certificate Expiry Notification</field>
+        <field name="model_id" ref="model_training_certificate"/>
+        <field name="subject">Certificate Expiring Soon - {{ object.course_id.name }}</field>
+        <field name="email_from">{{ (object.company_id.email or user.email) }}</field>
+        <field name="email_to">{{ object.employee_id.work_email }}</field>
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+                <p>Hello {{ object.employee_id.name }},</p>
+                
+                <p>This is a reminder that your training certificate is expiring soon.</p>
+                
+                <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                    <tr>
+                        <td style="padding: 8px; background-color: #f5f5f5;"><strong>Certificate Number:</strong></td>
+                        <td style="padding: 8px;">{{ object.name }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; background-color: #f5f5f5;"><strong>Course:</strong></td>
+                        <td style="padding: 8px;">{{ object.course_id.name }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; background-color: #f5f5f5;"><strong>Issue Date:</strong></td>
+                        <td style="padding: 8px;">{{ object.issue_date }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; background-color: #f5f5f5;"><strong>Expiry Date:</strong></td>
+                        <td style="padding: 8px; color: #d9534f;"><strong>{{ object.expiry_date }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; background-color: #f5f5f5;"><strong>Days Until Expiry:</strong></td>
+                        <td style="padding: 8px; color: #d9534f;"><strong>{{ object.days_until_expiry }} days</strong></td>
+                    </tr>
+                </table>
+                
+                <p>Please take action to renew your certification before it expires.</p>
+                
+                <p style="margin-top: 20px;">
+                    <a href="{{ object.get_portal_url() }}" 
+                       style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
+                        View Certificate
+                    </a>
+                </p>
+                
+                <p style="margin-top: 30px; font-size: 12px; color: #666;">
+                    This is an automated notification from the Training Management System.
+                </p>
+            </div>
+        </field>
+    </record>
+</odoo>

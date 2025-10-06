@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="menu_training_root"
+              name="Training"
+              sequence="60"
+              web_icon="employee_training,static/description/icon.png"/>
+
+    <!-- Courses Submenu -->
+    <menuitem id="menu_training_courses"
+              name="Courses"
+              parent="menu_training_root"
+              sequence="10"/>
+
+    <menuitem id="menu_training_course"
+              name="Training Courses"
+              parent="menu_training_courses"
+              action="action_training_course"
+              sequence="10"/>
+
+    <menuitem id="menu_training_session"
+              name="Training Sessions"
+              parent="menu_training_courses"
+              action="action_training_session"
+              sequence="20"/>
+
+    <!-- Enrollments Submenu -->
+    <menuitem id="menu_training_enrollments"
+              name="Enrollments"
+              parent="menu_training_root"
+              sequence="20"/>
+
+    <menuitem id="menu_training_enrollment"
+              name="All Enrollments"
+              parent="menu_training_enrollments"
+              action="action_training_enrollment"
+              sequence="10"/>
+
+    <!-- Certificates Submenu -->
+    <menuitem id="menu_training_certificates"
+              name="Certificates"
+              parent="menu_training_root"
+              sequence="30"/>
+
+    <menuitem id="menu_training_certificate"
+              name="All Certificates"
+              parent="menu_training_certificates"
+              action="action_training_certificate"
+              sequence="10"/>
+</odoo>

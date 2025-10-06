@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Certificate PDF Template - No Header/Footer, Single Page -->
+    <template id="report_training_certificate_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="certificate">
+                <div class="article" style="page-break-after: always;">
+                    <div style="font-family: 'Arial', 'Helvetica', sans-serif; padding: 40px; background: white;">
+                        
+                        <!-- Decorative Border -->
+                        <div style="border: 15px solid #2c3e50; padding: 50px 60px; position: relative;">
+                            
+                            <!-- Corner Decorations -->
+                            <div style="position: absolute; top: 30px; left: 30px; width: 80px; height: 80px; border-top: 3px solid #3498db; border-left: 3px solid #3498db;"></div>
+                            <div style="position: absolute; top: 30px; right: 30px; width: 80px; height: 80px; border-top: 3px solid #3498db; border-right: 3px solid #3498db;"></div>
+                            <div style="position: absolute; bottom: 30px; left: 30px; width: 80px; height: 80px; border-bottom: 3px solid #3498db; border-left: 3px solid #3498db;"></div>
+                            <div style="position: absolute; bottom: 30px; right: 30px; width: 80px; height: 80px; border-bottom: 3px solid #3498db; border-right: 3px solid #3498db;"></div>
+                            
+                            <!-- Header with Logo -->
+                            <div style="text-align: center; margin-bottom: 30px;">
+                                <t t-if="certificate.company_id and certificate.company_id.logo">
+                                    <img t-att-src="image_data_uri(certificate.company_id.logo)" 
+                                         style="max-height: 60px; margin-bottom: 15px;" 
+                                         alt="Company Logo"/>
+                                </t>
+                                <h1 style="font-size: 42px; color: #2c3e50; margin: 15px 0; font-weight: bold; text-transform: uppercase; letter-spacing: 4px;">
+                                    Certificate of Completion
+                                </h1>
+                                <div style="width: 100px; height: 3px; background: #3498db; margin: 0 auto;"></div>
+                            </div>
+
+                            <!-- Certificate Content -->
+                            <div style="text-align: center; margin: 40px 0;">
+                                <p style="font-size: 14px; color: #555; margin-bottom: 20px;">
+                                    This is to certify that
+                                </p>
+                                
+                                <h2 style="font-size: 32px; color: #2c3e50; margin: 15px 0; font-weight: bold; border-bottom: 2px solid #3498db; display: inline-block; padding-bottom: 8px; min-width: 300px;">
+                                    <t t-esc="certificate.employee_id.name"/>
+                                </h2>
+                                
+                                <p style="font-size: 14px; color: #555; margin: 25px 0 15px 0;">
+                                    has successfully completed the training course
+                                </p>
+                                
+                                <h3 style="font-size: 24px; color: #3498db; margin: 15px 0; font-weight: bold;">
+                                    <t t-esc="certificate.course_id.name"/>
+                                </h3>
+                                
+                                <t t-if="certificate.course_id.duration_days">
+                                    <p style="font-size: 12px; color: #777; margin: 8px 0;">
+                                        Duration: <t t-esc="certificate.course_id.duration_days"/> day(s)
+                                    </p>
+                                </t>
+                            </div>
+
+                            <!-- Certificate Details -->
+                            <div style="margin-top: 40px;">
+                                <table style="width: 100%; font-size: 12px; color: #555;">
+                                    <tr>
+                                        <td style="width: 33%; padding: 8px; text-align: left;">
+                                            <strong>Certificate No:</strong><br/>
+                                            <span style="color: #2c3e50; font-size: 14px;">
+                                                <t t-esc="certificate.name"/>
+                                            </span>
+                                        </td>
+                                        <td style="width: 34%; padding: 8px; text-align: center;">
+                                            <strong>Issue Date:</strong><br/>
+                                            <span style="color: #2c3e50; font-size: 14px;">
+                                                <t t-esc="certificate.issue_date.strftime('%B %d, %Y')"/>
+                                            </span>
+                                        </td>
+                                        <td style="width: 33%; padding: 8px; text-align: right;">
+                                            <t t-if="certificate.expiry_date">
+                                                <strong>Valid Until:</strong><br/>
+                                                <span style="color: #2c3e50; font-size: 14px;">
+                                                    <t t-esc="certificate.expiry_date.strftime('%B %d, %Y')"/>
+                                                </span>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Signature Section -->
+                            <div style="margin-top: 50px;">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 50%; text-align: center; padding: 15px;">
+                                            <div style="border-top: 2px solid #333; width: 180px; margin: 0 auto; padding-top: 8px;">
+                                                <strong style="font-size: 11px;">Authorized Signature</strong>
+                                            </div>
+                                        </td>
+                                        <td style="width: 50%; text-align: center; padding: 15px;">
+                                            <div style="border-top: 2px solid #333; width: 180px; margin: 0 auto; padding-top: 8px;">
+                                                <strong style="font-size: 11px;">Date</strong>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Footer -->
+                            <div style="text-align: center; margin-top: 35px; padding-top: 15px; border-top: 1px solid #ddd;">
+                                <p style="font-size: 10px; color: #999; margin: 0;">
+                                    <t t-if="certificate.company_id">
+                                        <t t-esc="certificate.company_id.name"/>
+                                    </t>
+                                    <t t-else="">
+                                        Training Department
+                                    </t>
+                                     | Training &amp; Development
+                                </p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -36,8 +36,8 @@
         'views/training_session_views.xml',
         'views/training_enrollment_views.xml',
         'views/training_certificate_views.xml',
-        'views/training_dashboard_views.xml',
         'views/training_menus.xml',
+        'views/training_dashboard_views.xml',
         'views/training_portal_templates.xml',
         
         # Reports

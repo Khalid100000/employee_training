@@ -1,5 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Demo Employees -->
+    <record id="demo_employee_john" model="hr.employee">
+        <field name="name">John Smith</field>
+        <field name="work_email">john.smith@example.com</field>
+        <field name="job_title">Software Developer</field>
+    </record>
+
+    <record id="demo_employee_sarah" model="hr.employee">
+        <field name="name">Sarah Johnson</field>
+        <field name="work_email">sarah.johnson@example.com</field>
+        <field name="job_title">Project Manager</field>
+    </record>
+
+    <record id="demo_employee_michael" model="hr.employee">
+        <field name="name">Michael Brown</field>
+        <field name="work_email">michael.brown@example.com</field>
+        <field name="job_title">HR Specialist</field>
+    </record>
+
+    <record id="demo_employee_emily" model="hr.employee">
+        <field name="name">Emily Davis</field>
+        <field name="work_email">emily.davis@example.com</field>
+        <field name="job_title">Sales Representative</field>
+    </record>
+
+    <record id="demo_employee_david" model="hr.employee">
+        <field name="name">David Wilson</field>
+        <field name="work_email">david.wilson@example.com</field>
+        <field name="job_title">Operations Manager</field>
+    </record>
+
+    <record id="demo_employee_lisa" model="hr.employee">
+        <field name="name">Lisa Anderson</field>
+        <field name="work_email">lisa.anderson@example.com</field>
+        <field name="job_title">Marketing Coordinator</field>
+    </record>
+
+    <record id="demo_employee_james" model="hr.employee">
+        <field name="name">James Martinez</field>
+        <field name="work_email">james.martinez@example.com</field>
+        <field name="job_title">Technical Lead</field>
+    </record>
+
+    <record id="demo_employee_jennifer" model="hr.employee">
+        <field name="name">Jennifer Taylor</field>
+        <field name="work_email">jennifer.taylor@example.com</field>
+        <field name="job_title">Customer Support</field>
+    </record>
+
     <!-- Demo Training Courses -->
     <record id="demo_course_safety" model="training.course">
         <field name="name">Workplace Safety Training</field>
@@ -36,68 +85,77 @@
         <field name="is_certification" eval="True"/>
     </record>
 
-    <!-- Demo Training Sessions -->
-    <record id="demo_session_safety_1" model="training.session">
+    <record id="demo_course_data_security" model="training.course">
+        <field name="name">Data Security &amp; Privacy</field>
+        <field name="description">Information security best practices and data protection</field>
+        <field name="duration_days">2</field>
+        <field name="is_certification" eval="True"/>
+    </record>
+
+    <!-- UPCOMING SESSIONS (Future) -->
+    <record id="demo_session_safety_upcoming_1" model="training.session">
         <field name="course_id" ref="demo_course_safety"/>
         <field name="instructor_id" ref="base.user_admin"/>
-        <field name="start_date" eval="(datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')"/>
-        <field name="end_date" eval="(datetime.now() + timedelta(days=32)).strftime('%Y-%m-%d')"/>
+        <field name="start_date" eval="(datetime.now() + timedelta(days=15)).strftime('%Y-%m-%d')"/>
+        <field name="end_date" eval="(datetime.now() + timedelta(days=17)).strftime('%Y-%m-%d')"/>
         <field name="location">Conference Room A</field>
         <field name="capacity">15</field>
         <field name="state">scheduled</field>
     </record>
 
-    <record id="demo_session_safety_2" model="training.session">
-        <field name="course_id" ref="demo_course_safety"/>
-        <field name="instructor_id" ref="base.user_admin"/>
-        <field name="start_date" eval="(datetime.now() + timedelta(days=60)).strftime('%Y-%m-%d')"/>
-        <field name="end_date" eval="(datetime.now() + timedelta(days=62)).strftime('%Y-%m-%d')"/>
-        <field name="location">Training Center B</field>
-        <field name="capacity">20</field>
-        <field name="state">draft</field>
-    </record>
-
-    <record id="demo_session_leadership_1" model="training.session">
+    <record id="demo_session_leadership_upcoming" model="training.session">
         <field name="course_id" ref="demo_course_leadership"/>
         <field name="instructor_id" ref="base.user_admin"/>
-        <field name="start_date" eval="(datetime.now() + timedelta(days=45)).strftime('%Y-%m-%d')"/>
-        <field name="end_date" eval="(datetime.now() + timedelta(days=50)).strftime('%Y-%m-%d')"/>
+        <field name="start_date" eval="(datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')"/>
+        <field name="end_date" eval="(datetime.now() + timedelta(days=35)).strftime('%Y-%m-%d')"/>
         <field name="location">Executive Training Room</field>
         <field name="capacity">10</field>
         <field name="state">scheduled</field>
     </record>
 
-    <record id="demo_session_communication_1" model="training.session">
-        <field name="course_id" ref="demo_course_communication"/>
-        <field name="instructor_id" ref="base.user_admin"/>
-        <field name="start_date" eval="(datetime.now() + timedelta(days=15)).strftime('%Y-%m-%d')"/>
-        <field name="end_date" eval="(datetime.now() + timedelta(days=15)).strftime('%Y-%m-%d')"/>
-        <field name="location">Online - Zoom</field>
-        <field name="capacity">50</field>
-        <field name="state">scheduled</field>
-    </record>
-
-    <record id="demo_session_tech_1" model="training.session">
+    <record id="demo_session_tech_upcoming" model="training.session">
         <field name="course_id" ref="demo_course_tech"/>
         <field name="instructor_id" ref="base.user_admin"/>
-        <field name="start_date" eval="(datetime.now() + timedelta(days=90)).strftime('%Y-%m-%d')"/>
-        <field name="end_date" eval="(datetime.now() + timedelta(days=100)).strftime('%Y-%m-%d')"/>
+        <field name="start_date" eval="(datetime.now() + timedelta(days=45)).strftime('%Y-%m-%d')"/>
+        <field name="end_date" eval="(datetime.now() + timedelta(days=55)).strftime('%Y-%m-%d')"/>
         <field name="location">Tech Lab</field>
         <field name="capacity">12</field>
         <field name="state">draft</field>
     </record>
 
-    <record id="demo_session_compliance_1" model="training.session">
-        <field name="course_id" ref="demo_course_compliance"/>
+    <record id="demo_session_communication_upcoming" model="training.session">
+        <field name="course_id" ref="demo_course_communication"/>
         <field name="instructor_id" ref="base.user_admin"/>
-        <field name="start_date" eval="(datetime.now() + timedelta(days=20)).strftime('%Y-%m-%d')"/>
-        <field name="end_date" eval="(datetime.now() + timedelta(days=20)).strftime('%Y-%m-%d')"/>
-        <field name="location">Main Auditorium</field>
-        <field name="capacity">100</field>
+        <field name="start_date" eval="(datetime.now() + timedelta(days=7)).strftime('%Y-%m-%d')"/>
+        <field name="end_date" eval="(datetime.now() + timedelta(days=7)).strftime('%Y-%m-%d')"/>
+        <field name="location">Online - Zoom</field>
+        <field name="capacity">50</field>
         <field name="state">scheduled</field>
     </record>
 
-    <record id="demo_session_past_safety" model="training.session">
+    <!-- ONGOING SESSIONS (Current) -->
+    <record id="demo_session_compliance_ongoing" model="training.session">
+        <field name="course_id" ref="demo_course_compliance"/>
+        <field name="instructor_id" ref="base.user_admin"/>
+        <field name="start_date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="end_date" eval="(datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="location">Main Auditorium</field>
+        <field name="capacity">100</field>
+        <field name="state">ongoing</field>
+    </record>
+
+    <record id="demo_session_data_security_ongoing" model="training.session">
+        <field name="course_id" ref="demo_course_data_security"/>
+        <field name="instructor_id" ref="base.user_admin"/>
+        <field name="start_date" eval="datetime.now().strftime('%Y-%m-%d')"/>
+        <field name="end_date" eval="(datetime.now() + timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="location">Training Room B</field>
+        <field name="capacity">20</field>
+        <field name="state">ongoing</field>
+    </record>
+
+    <!-- PAST SESSIONS (Completed) -->
+    <record id="demo_session_safety_past_1" model="training.session">
         <field name="course_id" ref="demo_course_safety"/>
         <field name="instructor_id" ref="base.user_admin"/>
         <field name="start_date" eval="(datetime.now() - timedelta(days=60)).strftime('%Y-%m-%d')"/>
@@ -107,7 +165,7 @@
         <field name="state">completed</field>
     </record>
 
-    <record id="demo_session_past_leadership" model="training.session">
+    <record id="demo_session_leadership_past" model="training.session">
         <field name="course_id" ref="demo_course_leadership"/>
         <field name="instructor_id" ref="base.user_admin"/>
         <field name="start_date" eval="(datetime.now() - timedelta(days=90)).strftime('%Y-%m-%d')"/>
@@ -117,17 +175,28 @@
         <field name="state">completed</field>
     </record>
 
-    <record id="demo_session_past_compliance" model="training.session">
+    <!-- OLD PAST SESSION for expired certificates -->
+    <record id="demo_session_compliance_old" model="training.session">
         <field name="course_id" ref="demo_course_compliance"/>
         <field name="instructor_id" ref="base.user_admin"/>
-        <field name="start_date" eval="(datetime.now() - timedelta(days=400)).strftime('%Y-%m-%d')"/>
-        <field name="end_date" eval="(datetime.now() - timedelta(days=400)).strftime('%Y-%m-%d')"/>
+        <field name="start_date" eval="(datetime.now() - timedelta(days=800)).strftime('%Y-%m-%d')"/>
+        <field name="end_date" eval="(datetime.now() - timedelta(days=800)).strftime('%Y-%m-%d')"/>
         <field name="location">Main Auditorium</field>
         <field name="capacity">100</field>
         <field name="state">completed</field>
     </record>
 
-    <record id="demo_session_past_tech" model="training.session">
+    <record id="demo_session_data_security_old" model="training.session">
+        <field name="course_id" ref="demo_course_data_security"/>
+        <field name="instructor_id" ref="base.user_admin"/>
+        <field name="start_date" eval="(datetime.now() - timedelta(days=720)).strftime('%Y-%m-%d')"/>
+        <field name="end_date" eval="(datetime.now() - timedelta(days=718)).strftime('%Y-%m-%d')"/>
+        <field name="location">Training Room A</field>
+        <field name="capacity">20</field>
+        <field name="state">completed</field>
+    </record>
+
+    <record id="demo_session_tech_past" model="training.session">
         <field name="course_id" ref="demo_course_tech"/>
         <field name="instructor_id" ref="base.user_admin"/>
         <field name="start_date" eval="(datetime.now() - timedelta(days=120)).strftime('%Y-%m-%d')"/>
@@ -137,6 +206,167 @@
         <field name="state">completed</field>
     </record>
 
-    <!-- Note: Enrollments should be created through the UI with actual employees -->
-    <!-- Demo enrollments would be created here if you have demo employees -->
+    <!-- ENROLLMENTS FOR UPCOMING SESSIONS -->
+    <record id="demo_enrollment_john_safety_upcoming" model="training.enrollment">
+        <field name="employee_id" ref="demo_employee_john"/>
+        <field name="session_id" ref="demo_session_safety_upcoming_1"/>
+        <field name="state">confirmed</field>
+        <field name="enrollment_date" eval="(datetime.now() - timedelta(days=5)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="demo_enrollment_sarah_leadership_upcoming" model="training.enrollment">
+        <field name="employee_id" ref="demo_employee_sarah"/>
+        <field name="session_id" ref="demo_session_leadership_upcoming"/>
+        <field name="state">confirmed</field>
+        <field name="enrollment_date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="demo_enrollment_emily_communication" model="training.enrollment">
+        <field name="employee_id" ref="demo_employee_emily"/>
+        <field name="session_id" ref="demo_session_communication_upcoming"/>
+        <field name="state">draft</field>
+        <field name="enrollment_date" eval="datetime.now().strftime('%Y-%m-%d')"/>
+    </record>
+
+    <!-- ENROLLMENTS FOR ONGOING SESSIONS -->
+    <record id="demo_enrollment_michael_compliance" model="training.enrollment">
+        <field name="employee_id" ref="demo_employee_michael"/>
+        <field name="session_id" ref="demo_session_compliance_ongoing"/>
+        <field name="state">confirmed</field>
+        <field name="enrollment_date" eval="(datetime.now() - timedelta(days=10)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="demo_enrollment_david_data_security" model="training.enrollment">
+        <field name="employee_id" ref="demo_employee_david"/>
+        <field name="session_id" ref="demo_session_data_security_ongoing"/>
+        <field name="state">confirmed</field>
+        <field name="enrollment_date" eval="(datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <!-- ENROLLMENTS FOR PAST SESSIONS (Attended - will generate certificates) -->
+    <record id="demo_enrollment_john_safety_past" model="training.enrollment">
+        <field name="employee_id" ref="demo_employee_john"/>
+        <field name="session_id" ref="demo_session_safety_past_1"/>
+        <field name="state">attended</field>
+        <field name="enrollment_date" eval="(datetime.now() - timedelta(days=70)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="demo_enrollment_sarah_leadership_past" model="training.enrollment">
+        <field name="employee_id" ref="demo_employee_sarah"/>
+        <field name="session_id" ref="demo_session_leadership_past"/>
+        <field name="state">attended</field>
+        <field name="enrollment_date" eval="(datetime.now() - timedelta(days=100)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="demo_enrollment_michael_tech_past" model="training.enrollment">
+        <field name="employee_id" ref="demo_employee_michael"/>
+        <field name="session_id" ref="demo_session_tech_past"/>
+        <field name="state">attended</field>
+        <field name="enrollment_date" eval="(datetime.now() - timedelta(days=130)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="demo_enrollment_emily_safety_past" model="training.enrollment">
+        <field name="employee_id" ref="demo_employee_emily"/>
+        <field name="session_id" ref="demo_session_safety_past_1"/>
+        <field name="state">attended</field>
+        <field name="enrollment_date" eval="(datetime.now() - timedelta(days=70)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="demo_enrollment_david_leadership_past" model="training.enrollment">
+        <field name="employee_id" ref="demo_employee_david"/>
+        <field name="session_id" ref="demo_session_leadership_past"/>
+        <field name="state">attended</field>
+        <field name="enrollment_date" eval="(datetime.now() - timedelta(days=100)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <!-- OLD ENROLLMENTS for expired/expiring certificates -->
+    <record id="demo_enrollment_lisa_compliance_old" model="training.enrollment">
+        <field name="employee_id" ref="demo_employee_lisa"/>
+        <field name="session_id" ref="demo_session_compliance_old"/>
+        <field name="state">attended</field>
+        <field name="enrollment_date" eval="(datetime.now() - timedelta(days=810)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="demo_enrollment_james_data_security_old" model="training.enrollment">
+        <field name="employee_id" ref="demo_employee_james"/>
+        <field name="session_id" ref="demo_session_data_security_old"/>
+        <field name="state">attended</field>
+        <field name="enrollment_date" eval="(datetime.now() - timedelta(days=730)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="demo_enrollment_jennifer_compliance_old" model="training.enrollment">
+        <field name="employee_id" ref="demo_employee_jennifer"/>
+        <field name="session_id" ref="demo_session_compliance_old"/>
+        <field name="state">attended</field>
+        <field name="enrollment_date" eval="(datetime.now() - timedelta(days=810)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <!-- VALID CERTIFICATES (Recent, not expiring soon) -->
+    <record id="demo_certificate_john_safety" model="training.certificate">
+        <field name="employee_id" ref="demo_employee_john"/>
+        <field name="course_id" ref="demo_course_safety"/>
+        <field name="enrollment_id" ref="demo_enrollment_john_safety_past"/>
+        <field name="issue_date" eval="(datetime.now() - timedelta(days=60)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="demo_certificate_sarah_leadership" model="training.certificate">
+        <field name="employee_id" ref="demo_employee_sarah"/>
+        <field name="course_id" ref="demo_course_leadership"/>
+        <field name="enrollment_id" ref="demo_enrollment_sarah_leadership_past"/>
+        <field name="issue_date" eval="(datetime.now() - timedelta(days=90)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="demo_certificate_michael_tech" model="training.certificate">
+        <field name="employee_id" ref="demo_employee_michael"/>
+        <field name="course_id" ref="demo_course_tech"/>
+        <field name="enrollment_id" ref="demo_enrollment_michael_tech_past"/>
+        <field name="issue_date" eval="(datetime.now() - timedelta(days=120)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <!-- EXPIRING SOON CERTIFICATES (Within 30 days) -->
+    <record id="demo_certificate_emily_safety_expiring" model="training.certificate">
+        <field name="employee_id" ref="demo_employee_emily"/>
+        <field name="course_id" ref="demo_course_safety"/>
+        <field name="enrollment_id" ref="demo_enrollment_emily_safety_past"/>
+        <field name="issue_date" eval="(datetime.now() - timedelta(days=715)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="demo_certificate_david_leadership_expiring" model="training.certificate">
+        <field name="employee_id" ref="demo_employee_david"/>
+        <field name="course_id" ref="demo_course_leadership"/>
+        <field name="enrollment_id" ref="demo_enrollment_david_leadership_past"/>
+        <field name="issue_date" eval="(datetime.now() - timedelta(days=710)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <!-- EXPIRED CERTIFICATES (Over 2 years old) -->
+    <record id="demo_certificate_lisa_compliance_expired" model="training.certificate">
+        <field name="employee_id" ref="demo_employee_lisa"/>
+        <field name="course_id" ref="demo_course_compliance"/>
+        <field name="enrollment_id" ref="demo_enrollment_lisa_compliance_old"/>
+        <field name="issue_date" eval="(datetime.now() - timedelta(days=800)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="demo_certificate_james_data_security_expired" model="training.certificate">
+        <field name="employee_id" ref="demo_employee_james"/>
+        <field name="course_id" ref="demo_course_data_security"/>
+        <field name="enrollment_id" ref="demo_enrollment_james_data_security_old"/>
+        <field name="issue_date" eval="(datetime.now() - timedelta(days=750)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="demo_certificate_jennifer_compliance_expired" model="training.certificate">
+        <field name="employee_id" ref="demo_employee_jennifer"/>
+        <field name="course_id" ref="demo_course_compliance"/>
+        <field name="enrollment_id" ref="demo_enrollment_jennifer_compliance_old"/>
+        <field name="issue_date" eval="(datetime.now() - timedelta(days=800)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <!-- CANCELLED ENROLLMENT (for variety) -->
+    <record id="demo_enrollment_lisa_tech_cancelled" model="training.enrollment">
+        <field name="employee_id" ref="demo_employee_lisa"/>
+        <field name="session_id" ref="demo_session_tech_upcoming"/>
+        <field name="state">cancelled</field>
+        <field name="enrollment_date" eval="(datetime.now() - timedelta(days=20)).strftime('%Y-%m-%d')"/>
+        <field name="notes">Schedule conflict - unable to attend</field>
+    </record>
+
 </odoo>
